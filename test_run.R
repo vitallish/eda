@@ -33,3 +33,4 @@ createTestDF <-function(){
 test <- createTestDF()
 
 out <- lapply(test,singleVarStats)
+

@@ -16,6 +16,26 @@ singleVarStats <- function(x){
   UseMethod("singleVarStats")
 }
 
+commonSingVar<-function(x){
+  
+  o <- list()
+  o$length <- length(x)
+  
+  # summary
+  o$table<-table(x)
+  o$prop <- o$table/o$length
+  
+  #nas
+  o$naCnt <- (sum(is.na(x)))
+  o$naPerc <- (o$naCnt/o$length)
+  
+  #ratio unique
+  o$unique <- unique(x)
+  o$uniquePerc <- length(o$unique)/o$length
+  
+  o
+}
+
 singleVarStats.factor <- function(x){
   o <- list()
 #   if (!is.factor(x)){
@@ -29,6 +49,11 @@ singleVarStats.factor <- function(x){
   o$common <- commonSingVar(x)
 
   o$plot$bar <- barchart(x)
+  o$plot$point <- ggplot(data = data.frame(x_d = seq_along(x), 
+                                            y_d = x), 
+                          aes(x = x_d, y = y_d ) ) + 
+    geom_point()
+  
   o$final <- x
   
   o
@@ -89,6 +114,10 @@ singleVarStats.numeric <- function(x){
                                            lty = 'dotted')})
   o$plot$qqnorm <- qqmath(x)
   
+  o$plot$point <- ggplot(data = data.frame(x_d = seq_along(x), 
+                                            y_d = x), aes(x = x_d, y = y_d )) + 
+    geom_point()
+  
     
     
   o$final <- x
@@ -115,6 +144,9 @@ singleVarStats.Date <- function(x){
   
   o$plot$qqunif <- qqmath(as.numeric(x), distribution = qunif)
   
+  o$plot$point <- ggplot(data = data.frame(x_d = seq_along(x), 
+                                            y_d = x), aes(x = x_d, y = y_d )) + 
+    geom_point()
   
   
   o$final <- x
