@@ -1,9 +1,9 @@
 labelOutlier <- function(x){
   # Creates labels for x based on outlier status
-  iqr_cut < -c(min(x), 
-               quantile(x)[2]-1.5*IQR(x), 
-               quantile(x)[4]+1.5*IQR(x), 
-               max(x))
+  iqr_cut < -c(min(x, na.rm = TRUE), 
+               quantile(x, na.rm = TRUE)[2]-1.5*IQR(x, na.rm = TRUE), 
+               quantile(x, na.rm = TRUE)[4]+1.5*IQR(x, na.rm = TRUE), 
+               max(x, na.rm = TRUE))
   
   cut(x, iqr_cut,include.lowest = T
       , labels = c('low', 'normal', 'high')
@@ -11,8 +11,8 @@ labelOutlier <- function(x){
 }
 
 filterOutlier <- function(x){
-  low <- quantile(x)[2]-1.5*IQR(x)
-  high <- quantile(x)[4]+1.5*IQR(x)
+  low <- quantile(x, na.rm = TRUE )[2]-1.5*IQR(x, na.rm = TRUE)
+  high <- quantile(x, na.rm = TRUE)[4]+1.5*IQR(x, na.rm = TRUE)
   x[x<low | x>high] <- NA
   
   x
@@ -48,3 +48,5 @@ otherLabel <-function(x, perc = 1, mx = 5, o_lab = 'other' ){
   
   droplevels(x)
 }
+
+
