@@ -36,5 +36,5 @@ createTestDF <-function(){
 
 test <- createTestDF()
 
-out <- lapply(test,singleVarStats)
+out <- lapply(test,singleVarStats, trim = TRUE, max_list = 2)
 

@@ -9,7 +9,7 @@ fd_breaks <-function(x){
   ceiling((as.numeric(max(x,na.rm = T))-as.numeric(min(x,na.rm=T)))/fd)
 }
 
-commonSingVar<-function(x){
+commonSingVar<-function(x, trim = FALSE, max_list = getOption("max.print")){
   
   o <- list()
   o$length <- length(x)
@@ -25,6 +25,25 @@ commonSingVar<-function(x){
   #ratio unique
   o$unique <- unique(x)
   o$uniquePerc <- length(o$unique)/o$length
+  o$final <- x
+  
+  if(trim){
+    
+    o$final <- o$final[1:min(max_list,length(o$final))]
+    
+    o$unique_length <- length(o$unique)
+    o$unique <- NULL
+    f_t<- with(o,cbind(ct = table, prop))
+    f_t <- f_t[order(f_t[,1], decreasing = TRUE),][1:min(max_list,nrow(f_t)),]
+    
+    o$full_table <- f_t
+    o$prop <- NULL
+    o$table <-NULL
+    o$final <- NULL
+    
+  }
+  
+  
   
   o
 }
@@ -52,38 +71,18 @@ labelOutlier <- function(x) {
       , labels = c('low', 'normal', 'high'))
 }
 
-trimSingVar <- function(v_x, max_list = getOption("max.print")){
-  v_x$final <- v_x$final[1:min(max_list,length(v_x$final))]
-  
-  v_x$common$unique_length <- length(v_x$common$unique)
-  v_x$common$unique <- NULL
-  f_t<- with(v_x$common,cbind(ct = table, prop))
-  f_t <- f_t[order(f_t[,1], decreasing = TRUE),][1:min(max_list,nrow(f_t)),]
-  
-  v_x$common$full_table <- f_t
-  v_x$common$prop <- NULL
-  v_x$common$table <-NULL
-  v_x
-}
-
 ## TODO create function to prettify, or should it just go 
   # into singleVarStats as an option? 
 
 ## Generic: singleVarStats ----
-singleVarStats <- function(x){
+singleVarStats <- function(x, trim, max_list){
   UseMethod("singleVarStats")
 }
-singleVarStats.factor <- function(x){
+singleVarStats.factor <- function(x, trim = FALSE, max_list = getOption("max.print")){
   o <- list()
-#   if (!is.factor(x)){
-#     x<-as.factor(x)
-#     o$converted <- TRUE
-#   }else{
-#     o$converted <- FALSE
-#   }
-#   
+  
   o$type <- 'factor'
-  o$common <- commonSingVar(x)
+  o$common <- commonSingVar(x, trim, max_list)
 
   o$plot$bar <- barchart(x)
   o$plot$point <- ggplot(data = data.frame(x_d = seq_along(x), 
@@ -91,12 +90,10 @@ singleVarStats.factor <- function(x){
                           aes(x = x_d, y = y_d ) ) + 
     geom_point()
   
-  o$final <- x
-  
   o
 }
 
-singleVarStats.character <- function(x){
+singleVarStats.character <- function(x, trim = FALSE, max_list = getOption("max.print")){
   o <- list()
   
 #   if (!is.character(x)){
@@ -107,33 +104,23 @@ singleVarStats.character <- function(x){
 #   }
 #   o$type <- 'char'
   
-  o$common <- commonSingVar(x)
+  o$common <- commonSingVar(x, trim, max_list)
   
   #char lengths
   lengths <- sapply(x, nchar)
   o$nchar_fn <- fivenum(lengths)
   o$plot$hist <- histogram(lengths)
-  o$final <- x
   o
 }
 
-singleVarStats.numeric <- function(x){
+singleVarStats.numeric <- function(x, trim = FALSE, max_list = getOption("max.print")){
   o <- list()
   
-#   if (!is.numeric(x)){
-#     if(is.factor(x)){
-#       x <- as.numeric(as.character(x))
-#     }else{
-#       x<-as.numeric(x)
-#     }
-#     o$converted <- TRUE
-#   }else{
-#     o$converted <- FALSE
-#   }
+
   
   o$type <- 'numeric'
 
-  o$common <- commonSingVar(x)
+  o$common <- commonSingVar(x, trim, max_list)
   
   #num_stats
   o$fivenum <- fivenum(x)
@@ -156,18 +143,15 @@ singleVarStats.numeric <- function(x){
     geom_point()
   
     
-    
-  o$final <- x
-  
   o
 }
 
-singleVarStats.Date <- function(x){
+singleVarStats.Date <- function(x, trim = FALSE, max_list = getOption("max.print")){
   o <- list()
   
   o$type <- 'Date'
   
-  o$common <- commonSingVar(x)
+  o$common <- commonSingVar(x, trim, max_list)
   
   #Date Stats
   o$median <- median(x, na.rm = TRUE)
@@ -184,9 +168,6 @@ singleVarStats.Date <- function(x){
   o$plot$point <- ggplot(data = data.frame(x_d = seq_along(x), 
                                             y_d = x), aes(x = x_d, y = y_d )) + 
     geom_point()
-  
-  
-  o$final <- x
   
   o
 }
