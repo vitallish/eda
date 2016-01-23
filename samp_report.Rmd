@@ -45,18 +45,5 @@ test <- createTestDF()
 
 print_single_var(test)
 
-
-
-
-
-
-#pander(out$state.region$common$full_table, style = "rmarkdown")
-
-# pander(out$state.region$nchar_fn)
-
-#for (x in out$state.region$plot)
- # print(x)
-
-
 ```
 

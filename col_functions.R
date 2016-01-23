@@ -6,6 +6,7 @@ require(pander)
 
 
 ## Regular functions ----
+
 fd_breaks <-function(x){
   fd <-2*IQR(x, na.rm = T)*length(x)^(-1/3)
   ceiling((as.numeric(max(x,na.rm = T))-as.numeric(min(x,na.rm=T)))/fd)
@@ -74,7 +75,17 @@ labelOutlier <- function(x) {
 
 print_single_var <- function(x){
   cat('## Single Var Interactions \n')
-  out <- lapply(x,singleVarStats, trim = TRUE, max_list = 10)
+  #out <- lapply(x,singleVarStats, trim = TRUE, max_list = 10)
+  out <- list()
+  
+  var_labels <- names(x)
+  for (col_name in var_labels){
+    out[[col_name]] <-
+      singleVarStats(x[[col_name]], 
+          trim = TRUE, 
+          max_list = 10,
+          col_name)
+  }
   
   for (v in names(out)){
     cat('\n')
@@ -146,11 +157,16 @@ singleVarStats.factor <-
   
   plot_l <-structure(list(), class=c("plot_list", "list"))
   
-  plot_l$bar <- barchart(x)
+  plot_l$bar <- barchart(x,
+                         ylab = var_name,
+                         main = paste("Frequency of terms in", var_name))
   plot_l$point <- ggplot(data = data.frame(x_d = seq_along(x), 
                                             y_d = x), 
                           aes(x = x_d, y = y_d ) ) + 
-    geom_point()
+    geom_point() +
+    labs(x = "index",
+         y = var_name,
+         title = "Values over Index")
   
   o$plot <- plot_l
   
@@ -160,7 +176,8 @@ singleVarStats.factor <-
 singleVarStats.character <- 
   function(x, 
            trim = FALSE, 
-           max_list = getOption("max.print")){
+           max_list = getOption("max.print"),
+           var_name = 'x_def'){
   o <- list()
   
 #   if (!is.character(x)){
@@ -176,14 +193,17 @@ singleVarStats.character <-
   #char lengths
   lengths <- sapply(x, nchar)
   
-  vect_l <-structure(list(), class=c("vect_list", "list"))
+  vect_l <- structure(list(), class=c("vect_list", "list"))
   
   vect_l$nchar_fn <- fivenum(lengths)
+  
   names(vect_l$nchar_fn) <- c ('min', 'low-hindge', 'median', 'up-hindge', 'max') 
+  
   o$vect <- vect_l
   
-  plot_l <-structure(list(), class=c("plot_list", "list"))
-  plot_l$hist <- histogram(lengths)
+  plot_l <- structure(list(), class=c("plot_list", "list"))
+  plot_l$hist <- histogram(lengths,
+                           ylab = paste("Length of characters in", var_name))
   o$plot <- plot_l
   
   o
@@ -192,7 +212,8 @@ singleVarStats.character <-
 singleVarStats.numeric <- 
   function(x, 
            trim = FALSE, 
-           max_list = getOption("max.print")){
+           max_list = getOption("max.print"),
+           var_name = "x_def"){
   o <- list()
   
   o$type <- 'numeric'
@@ -216,17 +237,24 @@ singleVarStats.numeric <-
   
   plot_l <-structure(list(), class=c("plot_list", "list"))
   
-  plot_l$hist <-  histogram(x, 
+  plot_l$hist <-  histogram(x,
+                            xlab = var_name,
                             panel = function(...){
                               panel.histogram(...)
-                              panel.abline(v=o$vect$mean, lwd = 2, lty = 'dashed')
-                              panel.abline(v = o$vect$mean +c(-1,1)*o$vect$sd,
+                              panel.abline(v=o$vect$keystats['mean'], 
+                                           lwd = 2, lty = 'dashed')
+                              panel.abline(v = o$vect$keystats['mean'] + 
+                                             c(-1,1) * o$vect$keystats['sd'],
                                            lty = 'dotted')})
-  plot_l$qqnorm <- qqmath(x)
+  plot_l$qqnorm <- qqmath(x, 
+                          ylab = var_name)
   
   plot_l$point <- ggplot(data = data.frame(x_d = seq_along(x), 
                                             y_d = x), aes(x = x_d, y = y_d )) + 
-    geom_point()
+    geom_point() +
+    labs(x = "index",
+         y = var_name,
+         title = "Values over Index")
   
   o$plot <- plot_l  
   o
@@ -235,7 +263,8 @@ singleVarStats.numeric <-
 singleVarStats.Date <- 
   function(x, 
            trim = FALSE, 
-           max_list = getOption("max.print")){
+           max_list = getOption("max.print"),
+           var_name = "x_def"){
   o <- list()
   
   o$type <- 'Date'
@@ -258,13 +287,19 @@ singleVarStats.Date <-
   plot_l <-structure(list(), class=c("plot_list", "list"))
   
   plot_l$hist <-  ggplot(data = data.frame(x), aes(x = x)) + 
-    geom_histogram()
+    geom_histogram()+
+    labs(x = var_name,
+         title = paste("Histogram"))
   
-  plot_l$qqunif <- qqmath(as.numeric(x), distribution = qunif)
+  plot_l$qqunif <- qqmath(as.numeric(x), distribution = qunif,
+                          ylab = var_name)
   
   plot_l$point <- ggplot(data = data.frame(x_d = seq_along(x), 
                                             y_d = x), aes(x = x_d, y = y_d )) + 
-    geom_point()
+    geom_point()+
+    labs(x = "index",
+         y = var_name,
+         title = "Values over Index")
   o$plot <- plot_l
   
   o
