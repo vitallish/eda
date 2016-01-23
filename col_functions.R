@@ -2,6 +2,8 @@
 require(lattice)
 require(e1071)
 require(ggplot2)
+require(pander)
+
 
 ## Regular functions ----
 fd_breaks <-function(x){
@@ -9,7 +11,8 @@ fd_breaks <-function(x){
   ceiling((as.numeric(max(x,na.rm = T))-as.numeric(min(x,na.rm=T)))/fd)
 }
 
-commonSingVar<-function(x, trim = FALSE, max_list = getOption("max.print")){
+commonSingVar<-function(x, trim = FALSE, max_list = getOption("max.print"),
+                        for_print = FALSE){
   
   o <- list()
   o$length <- length(x)
@@ -24,29 +27,32 @@ commonSingVar<-function(x, trim = FALSE, max_list = getOption("max.print")){
   
   #ratio unique
   o$unique <- unique(x)
+  o$unique_length <- length(o$unique)
   o$uniquePerc <- length(o$unique)/o$length
+  o$unique <- NULL
+  
+  
   o$final <- x
   
+  f_t<- with(o,cbind(ct = table, prop))
+  f_t <- f_t[order(f_t[,1], decreasing = TRUE),]
+  
+  o$full_table <- f_t
+  o$prop <- NULL
+  o$table <-NULL
+  
   if(trim){
-    
     o$final <- o$final[1:min(max_list,length(o$final))]
-    
-    o$unique_length <- length(o$unique)
-    o$unique <- NULL
-    f_t<- with(o,cbind(ct = table, prop))
-    f_t <- f_t[order(f_t[,1], decreasing = TRUE),][1:min(max_list,nrow(f_t)),]
-    
-    o$full_table <- f_t
-    o$prop <- NULL
-    o$table <-NULL
-    o$final <- NULL
-    
+    o$full_table <- f_t[1:min(max_list,nrow(f_t)),]
   }
+  
+  
   
   
   
   o
 }
+
 labelOutlier <- function(x) {
   # Labels in the input vector as either low, normal or high based upon the
   # standard definition of an outlier. Warning, this function overwrites
@@ -75,9 +81,11 @@ labelOutlier <- function(x) {
   # into singleVarStats as an option? 
 
 ## Generic: singleVarStats ----
+
 singleVarStats <- function(x, trim, max_list){
   UseMethod("singleVarStats")
 }
+
 singleVarStats.factor <- function(x, trim = FALSE, max_list = getOption("max.print")){
   o <- list()
   
@@ -102,13 +110,13 @@ singleVarStats.character <- function(x, trim = FALSE, max_list = getOption("max.
 #   }else{
 #     o$converted <- FALSE
 #   }
-#   o$type <- 'char'
+  o$type <- 'character'
   
   o$common <- commonSingVar(x, trim, max_list)
   
   #char lengths
   lengths <- sapply(x, nchar)
-  o$nchar_fn <- fivenum(lengths)
+  o$vect$nchar_fn <- fivenum(lengths)
   o$plot$hist <- histogram(lengths)
   o
 }
@@ -123,11 +131,11 @@ singleVarStats.numeric <- function(x, trim = FALSE, max_list = getOption("max.pr
   o$common <- commonSingVar(x, trim, max_list)
   
   #num_stats
-  o$fivenum <- fivenum(x)
-  o$mean <- mean(x, na.rm =TRUE)
-  o$sd <- sd(x, na.rm =TRUE)
-  o$skewness <-skewness(x, na.rm = TRUE)
-  o$kurtosis <- kurtosis(x, na.rm = TRUE)
+  o$vect$fivenum <- fivenum(x)
+  o$val$mean <- mean(x, na.rm =TRUE)
+  o$val$sd <- sd(x, na.rm =TRUE)
+  o$val$skewness <-skewness(x, na.rm = TRUE)
+  o$val$kurtosis <- kurtosis(x, na.rm = TRUE)
   
   
   o$plot$hist <-  histogram(x, 
@@ -154,11 +162,11 @@ singleVarStats.Date <- function(x, trim = FALSE, max_list = getOption("max.print
   o$common <- commonSingVar(x, trim, max_list)
   
   #Date Stats
-  o$median <- median(x, na.rm = TRUE)
-  o$mean <- mean(x, na.rm =TRUE)
-  o$sd <- sd(x, na.rm =TRUE)
-  o$min <- min(x, na.rm =TRUE)
-  o$max <- max(x, na.rm =TRUE)
+  o$val$median <- median(x, na.rm = TRUE)
+  o$val$mean <- mean(x, na.rm =TRUE)
+  o$val$sd <- sd(x, na.rm =TRUE)
+  o$val$min <- min(x, na.rm =TRUE)
+  o$val$max <- max(x, na.rm =TRUE)
   
   o$plot$hist <-  ggplot(data = data.frame(x), aes(x = x)) + 
     geom_histogram()
@@ -226,4 +234,5 @@ filterOutlier.default <- function(x) {
   warning("Default method for filterOutlier just returns original vector")
   x
 }
+
 ## BREAK ----
