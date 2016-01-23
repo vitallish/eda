@@ -40,25 +40,42 @@ createTestDF <-function(){
 
 ```
 
-```{r, echo=FALSE, comment=NA, results='asis'}
+```{r, echo=FALSE, comment=NA, results='asis', message=FALSE}
 test <- createTestDF()
-cat('## Watch out \n')
+
+cat('## Single Var Interactions \n')
 out <- lapply(test,singleVarStats, trim = TRUE, max_list = 10)
 
 
-com <- unlist(out$state.region$common[1:5])
+for (v in names(out)){
+  cat('### ')
+  cat(v)
+  cat('\n')
+  
+  for (l in out[[v]]){
+    
+    if("plot_list" %in% class(l)){
+      knitEDA(l)
+      
+    } else{
+      cat(knitEDA(l))
+    }
+    
+    
+    
+  }
+}
 
 
-pander(out$state.region$common[1:5], style = "rmarkdown")
 
 
 
-pander(out$state.region$common$full_table, style = "rmarkdown")
+#pander(out$state.region$common$full_table, style = "rmarkdown")
 
 # pander(out$state.region$nchar_fn)
 
-for (x in out$state.region$plot)
-  print(x)
+#for (x in out$state.region$plot)
+ # print(x)
 
 
 ```

@@ -12,9 +12,9 @@ fd_breaks <-function(x){
 }
 
 commonSingVar<-function(x, trim = FALSE, max_list = getOption("max.print"),
-                        for_print = FALSE){
+                        var_name = 'def_x'){
   
-  o <- list()
+  o <- structure(list(),class = c("common_list", "list"))
   o$length <- length(x)
   
   # summary
@@ -45,11 +45,6 @@ commonSingVar<-function(x, trim = FALSE, max_list = getOption("max.print"),
     o$final <- o$final[1:min(max_list,length(o$final))]
     o$full_table <- f_t[1:min(max_list,nrow(f_t)),]
   }
-  
-  
-  
-  
-  
   o
 }
 
@@ -80,28 +75,65 @@ labelOutlier <- function(x) {
 ## TODO create function to prettify, or should it just go 
   # into singleVarStats as an option? 
 
+## Generic: knitEDA ----
+
+knitEDA <- function(x, ...){
+  UseMethod("knitEDA")
+}
+
+knitEDA.common_list <-function(x,...){
+  paste(
+    pander(x[1:5], style = "rmarkdown"),
+    '\n',
+    pander(x$full_table)
+  )
+  
+  #o
+}
+
+knitEDA.plot_list <-function(x,...){
+  sapply(x, print)
+}
+
+
+knitEDA.default <- function(x,...){
+  # for undefined types, return nothing
+  message(paste0("knitEDA is not defined for class: ", class(x)))
+}
+
 ## Generic: singleVarStats ----
 
-singleVarStats <- function(x, trim, max_list){
+singleVarStats <- function(x, ...){
   UseMethod("singleVarStats")
 }
 
-singleVarStats.factor <- function(x, trim = FALSE, max_list = getOption("max.print")){
+singleVarStats.factor <- 
+  function(x, 
+           trim = FALSE,
+           max_list = getOption("max.print"),
+           var_name = 'def_x'){
   o <- list()
-  
+  o$var_name <- var_name
   o$type <- 'factor'
   o$common <- commonSingVar(x, trim, max_list)
-
-  o$plot$bar <- barchart(x)
-  o$plot$point <- ggplot(data = data.frame(x_d = seq_along(x), 
+  
+  plot_l <-structure(list(), class=c("plot_list", "list"))
+  
+  plot_l$bar <- barchart(x)
+  plot_l$point <- ggplot(data = data.frame(x_d = seq_along(x), 
                                             y_d = x), 
                           aes(x = x_d, y = y_d ) ) + 
     geom_point()
   
+  o$plot <- plot_l
+  
   o
 }
 
-singleVarStats.character <- function(x, trim = FALSE, max_list = getOption("max.print")){
+singleVarStats.character <- 
+  function(x, 
+           trim = FALSE, 
+           max_list = getOption("max.print")){
   o <- list()
   
 #   if (!is.character(x)){
@@ -121,7 +153,10 @@ singleVarStats.character <- function(x, trim = FALSE, max_list = getOption("max.
   o
 }
 
-singleVarStats.numeric <- function(x, trim = FALSE, max_list = getOption("max.print")){
+singleVarStats.numeric <- 
+  function(x, 
+           trim = FALSE, 
+           max_list = getOption("max.print")){
   o <- list()
   
 
@@ -154,7 +189,10 @@ singleVarStats.numeric <- function(x, trim = FALSE, max_list = getOption("max.pr
   o
 }
 
-singleVarStats.Date <- function(x, trim = FALSE, max_list = getOption("max.print")){
+singleVarStats.Date <- 
+  function(x, 
+           trim = FALSE, 
+           max_list = getOption("max.print")){
   o <- list()
   
   o$type <- 'Date'
