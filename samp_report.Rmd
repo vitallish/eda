@@ -2,11 +2,11 @@
 title: "Sample Report"
 author: "author"
 date: "January 19, 2016"
-output: html_document
+output: word_document
 ---
 
 ```{r, echo= FALSE, warning=FALSE, message=FALSE}
-source("col_functions.R")
+library(edaR)
 createTestDF <-function(){
   test <- 
     data.frame(state.name,
