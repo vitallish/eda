@@ -2,27 +2,30 @@
 % Please edit documentation in R/commonSingVar.R
 \name{commonSingVar}
 \alias{commonSingVar}
-\title{commonSingVar}
+\title{Common statistics that are applied to all vector classes.}
 \usage{
 commonSingVar(x, trim = FALSE, max_list = getOption("max.print"),
   var_name = "def_x")
 }
 \arguments{
-\item{x}{}
+\item{x}{A vector.}
 
-\item{trim}{}
+\item{trim}{Should the output be trimmed for better readability?}
 
-\item{max_list}{}
+\item{max_list}{the amount of members to show for tables.}
 
-\item{var_name}{}
+\item{var_name}{Currently not used, may be used for labeling later on.}
 }
 \value{
-output
+a list with the following elements:
+ length
+ full_table (proportions and counts of members of x)
+ NA Count
+ NA Percentage
+ Length of Unique Values
+ Final
 }
 \description{
-commonSingVar
-}
-\examples{
-i dunno
+Common statistics that are applied to all vector classes.
 }
 

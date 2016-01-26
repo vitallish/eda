@@ -189,3 +189,24 @@ singleVarStats.Date <-
     
     o
   }
+
+#' @describeIn singleVarStats
+#' @export
+#' 
+#' 
+singleVarStats.data.frame <- function(data_frame){
+  out <- list()
+  
+  var_labels <- names(data_frame)
+  for (col_name in var_labels){
+    out[[col_name]] <-
+      singleVarStats(data_frame[[col_name]], 
+                     trim = TRUE, 
+                     max_list = 10,
+                     col_name)
+  }
+  
+  
+  out
+  
+}

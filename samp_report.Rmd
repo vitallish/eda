@@ -2,11 +2,16 @@
 title: "Sample Report"
 author: "author"
 date: "January 19, 2016"
-output: word_document
+output: html_document
 ---
 
 ```{r, echo= FALSE, warning=FALSE, message=FALSE}
 library(edaR)
+require(lattice)
+require(e1071)
+require(ggplot2)
+require(pander)
+
 createTestDF <-function(){
   test <- 
     data.frame(state.name,
@@ -41,9 +46,9 @@ createTestDF <-function(){
 ```
 
 ```{r, echo=FALSE, comment=NA, results='asis', message=FALSE, warning=FALSE}
-test <- createTestDF()
+# test <- createTestDF()
 
-print_single_var(test)
+printSingleVarStats(singleVarStats(edaR_test))
 
 ```
 

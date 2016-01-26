@@ -4,6 +4,7 @@
 \alias{singleVarStats}
 \alias{singleVarStats.Date}
 \alias{singleVarStats.character}
+\alias{singleVarStats.data.frame}
 \alias{singleVarStats.factor}
 \alias{singleVarStats.numeric}
 \title{Meat of the product}
@@ -21,6 +22,8 @@ singleVarStats(x, ...)
 
 \method{singleVarStats}{Date}(x, trim = FALSE,
   max_list = getOption("max.print"), var_name = "x_def")
+
+\method{singleVarStats}{data.frame}(data_frame)
 }
 \arguments{
 \item{x}{}
@@ -54,6 +57,8 @@ factor version
 \item \code{numeric}: 
 
 \item \code{Date}: 
+
+\item \code{data.frame}: 
 }}
 \examples{
 nice
