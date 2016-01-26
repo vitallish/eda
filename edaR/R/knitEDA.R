@@ -38,8 +38,13 @@ knitEDA.vect_list <- function(x, ...){
   
 }
 
-#' @describeIn knitEDA default method (does not print and warns)
 
+knitEDA.skip_eda <-function(x,...){
+  
+  
+}
+
+#' @describeIn knitEDA default method (does not print and warns)
 knitEDA.default <- function(x,...){
   # for undefined types, return nothing
   warning(paste0("knitEDA is not defined for class: ", class(x)))

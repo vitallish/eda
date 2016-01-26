@@ -6,6 +6,7 @@
 \alias{singleVarStats.character}
 \alias{singleVarStats.data.frame}
 \alias{singleVarStats.factor}
+\alias{singleVarStats.logical}
 \alias{singleVarStats.numeric}
 \title{Meat of the product}
 \usage{
@@ -23,6 +24,9 @@ singleVarStats(x, ...)
 \method{singleVarStats}{Date}(x, trim = FALSE,
   max_list = getOption("max.print"), var_name = "x_def")
 
+\method{singleVarStats}{logical}(x, trim = FALSE,
+  max_list = getOption("max.print"), var_name = "x_def")
+
 \method{singleVarStats}{data.frame}(data_frame)
 }
 \arguments{
@@ -35,6 +39,8 @@ singleVarStats(x, ...)
 \item{max_list}{}
 
 \item{var_name}{}
+
+\item{data_frame}{a dataframe object. the SVS loops over the columns.}
 
 \item{x}{}
 }
@@ -57,6 +63,8 @@ factor version
 \item \code{numeric}: 
 
 \item \code{Date}: 
+
+\item \code{logical}: : converts boolean to factor and singleVarStats treats as such.
 
 \item \code{data.frame}: 
 }}

@@ -1,4 +1,3 @@
-source("col_functions.R")
 createTestDF <-function(){
   test <- 
     data.frame(state.name,
@@ -16,7 +15,7 @@ createTestDF <-function(){
   set.seed(1234)
   
   test$rand_dates <- sample(dates_choice,size = nrow(test))
-  
+  test$rand_bool <- sample(c(T,F),nrow(test), replace = TRUE)
   rat_na <- .1
   total_na <- round(rat_na*prod(dim(test)))
   x_rand <- sample(x = 1:dim(test)[1], size = total_na, 
@@ -29,8 +28,3 @@ createTestDF <-function(){
   
   test
 }
-
-test <- createTestDF()
-
-out <- lapply(test,singleVarStats, trim = TRUE, max_list = 10)
-

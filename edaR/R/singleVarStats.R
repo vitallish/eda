@@ -29,8 +29,8 @@ singleVarStats.factor <-
            max_list = getOption("max.print"),
            var_name = 'def_x'){
     o <- list()
-    o$var_name <- var_name
-    o$type <- 'factor'
+    o$var_name <- skipPrintEDA(var_name)
+    o$type <- skipPrintEDA('factor')
     o$common <- commonSingVar(x, trim, max_list)
     
     plot_l <-structure(list(), class=c("plot_list", "list"))
@@ -67,7 +67,8 @@ singleVarStats.character <-
     #   }else{
     #     o$converted <- FALSE
     #   }
-    o$type <- 'character'
+    o$type <- skipPrintEDA('character')
+    o$var_name <- skipPrintEDA(var_name)
     
     o$common <- commonSingVar(x, trim, max_list)
     
@@ -99,7 +100,8 @@ singleVarStats.numeric <-
            var_name = "x_def"){
     o <- list()
     
-    o$type <- 'numeric'
+    o$type <- skipPrintEDA('numeric')
+    o$var_name <- skipPrintEDA(var_name)
     
     o$common <- commonSingVar(x, trim, max_list)
     
@@ -152,7 +154,8 @@ singleVarStats.Date <-
            var_name = "x_def"){
     o <- list()
     
-    o$type <- 'Date'
+    o$type <- skipPrintEDA('Date')
+    o$var_name <- skipPrintEDA(var_name)
     
     o$common <- commonSingVar(x, trim, max_list)
     
@@ -189,9 +192,22 @@ singleVarStats.Date <-
     
     o
   }
+#' @describeIn singleVarStats : converts boolean to factor and singleVarStats treats as such.
+#' @export
+singleVarStats.logical <- 
+  function(x, 
+           trim = FALSE, 
+           max_list = getOption("max.print"),
+           var_name = "x_def"){
+    
+    singleVarStats(as.factor(x), trim, max_list, var_name)
+
+}
+
 
 #' @describeIn singleVarStats
 #' @export
+#' @param data_frame a dataframe object. the SVS loops over the columns.
 #' 
 #' 
 singleVarStats.data.frame <- function(data_frame){
@@ -201,9 +217,10 @@ singleVarStats.data.frame <- function(data_frame){
   for (col_name in var_labels){
     out[[col_name]] <-
       singleVarStats(data_frame[[col_name]], 
-                     trim = TRUE, 
-                     max_list = 10,
-                     col_name)
+                   trim = TRUE, 
+                   max_list = 10,
+                   col_name)
+    
   }
   
   
