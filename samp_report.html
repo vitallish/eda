@@ -95,11 +95,9 @@ str(edaR_test)</code></pre>
 ##  $ rand_bool     : logi  TRUE TRUE FALSE FALSE TRUE FALSE ...</code></pre>
 <div id="now-for-the-actual-package" class="section level1">
 <h1>Now for the actual package:</h1>
-<pre class="r"><code>printSingleVarStats(
-
-    singleVarStats(edaR_test)
-    
-  )</code></pre>
+<pre class="r"><code>  raw_lists &lt;- singleVarStats(edaR_test) 
+  
+  printSingleVarStats(raw_lists)</code></pre>
 <div id="single-var-interactions" class="section level2">
 <h2>Single Var Interactions</h2>
 <div id="state.name" class="section level3">

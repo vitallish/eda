@@ -1,12 +1,12 @@
 Package: edaR
 Type: Package
 Title: Tools for exploratory data analysis
-Version: 0.9
+Version: 0.5
 Date: 2016-01-24
 Author: Vitaly Druker
 Maintainer: Vitaly <vdruker@gmail.com>
 Description: This package helps automate EDA by computing common statistics for each column in a dataframe based on the column type. Provides a function for outputting and formatting these statistics into a knitr document for easy viewing and sharing.
-License: GPL
+License: MIT
 LazyData: true
 Imports: lattice,
     e1071,
