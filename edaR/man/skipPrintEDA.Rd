@@ -15,4 +15,5 @@ original item with skip_eda class attached.
 \description{
 Add a skip class to an object
 }
+\keyword{internal}
 

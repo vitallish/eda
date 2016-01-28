@@ -15,9 +15,9 @@ knitEDA <- function(x, ...){
 
 knitEDA.common_list <-function(x,...){
 
-  pander(x[1:5], style = "rmarkdown")
+  pander::pander(x[1:5], style = "rmarkdown")
     
-  pander(x$full_table)
+  pander::pander(x$full_table)
   
   #o
 }
@@ -33,7 +33,7 @@ knitEDA.plot_list <-function(x,...){
 
 knitEDA.vect_list <- function(x, ...){
   
-  pander(x, style = "rmarkdown")
+  pander::pander(x, style = "rmarkdown")
   
 }
 

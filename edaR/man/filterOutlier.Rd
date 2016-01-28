@@ -6,7 +6,7 @@
 \alias{filterOutlier.default}
 \alias{filterOutlier.factor}
 \alias{filterOutlier.numeric}
-\title{filterinf tile}
+\title{Minimize the spread/variablity in a column.}
 \usage{
 filterOutlier(x, ...)
 
@@ -27,7 +27,7 @@ filterOutlier(x, ...)
 o
 }
 \description{
-filterinf tile
+Minimize the spread/variablity in a column.
 }
 \section{Methods (by class)}{
 \itemize{
