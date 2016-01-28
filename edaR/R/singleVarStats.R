@@ -5,6 +5,8 @@
 #'
 #' @return object
 #' @export
+#' @import ggplot2
+#' @import lattice
 #'
 #' @examples nice
 singleVarStats <- function(x, ...){
@@ -114,8 +116,8 @@ singleVarStats.numeric <-
     vect_l$keystats <- c(
       mean = mean(x, na.rm =TRUE),
       sd = sd(x, na.rm =TRUE),
-      skewness = skewness(x, na.rm = TRUE),
-      kurtosis = kurtosis(x, na.rm = TRUE)
+      skewness = e1071::skewness(x, na.rm = TRUE),
+      kurtosis = e1071::kurtosis(x, na.rm = TRUE)
     )
     
     o$vect <- vect_l

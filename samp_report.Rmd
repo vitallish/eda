@@ -7,10 +7,6 @@ output: html_document
 
 ```{r, warning=FALSE, message=FALSE}
 require(edaR)
-require(lattice)
-require(e1071)
-require(ggplot2)
-require(pander)
 
 str(edaR_test)
 
