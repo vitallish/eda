@@ -1,4 +1,4 @@
-#' filterinf tile
+#' Minimize the spread/variablity in a column. 
 #'
 #' @param x 
 #' @param ... 
@@ -11,7 +11,6 @@ filterOutlier <- function(x, ...) {
   UseMethod("filterOutlier")
   
 }
-
 
 #' @export
 #'
