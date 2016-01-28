@@ -6,6 +6,10 @@
 #' @export
 #'
 printSingleVarStats <- function(single_var_stat_object){
+  #set pander to false auto.asis
+  old_panderOption <- panderOptions('knitr.auto.asis')
+  panderOptions('knitr.auto.asis', FALSE)
+  
   cat('## Single Var Interactions \n')
   #out <- lapply(x,singleVarStats, trim = TRUE, max_list = 10)
   
@@ -17,13 +21,13 @@ printSingleVarStats <- function(single_var_stat_object){
     cat('\n')
     
     for (l in single_var_stat_object[[v]]){
-      if("plot_list" %in% class(l)){
+      
         knitEDA(l)
-      } else{
-        cat(knitEDA(l))
-      }
       
     }
     
   }
+  
+  #reset pander option
+  panderOptions('knitr.auto.asis',old_panderOption)
 }
