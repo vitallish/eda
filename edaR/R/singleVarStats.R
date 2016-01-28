@@ -164,12 +164,12 @@ singleVarStats.Date <-
     vect_l <-structure(list(), class=c("vect_list", "list"))
     
     vect_l$keystats <- c(
-      mean = mean(x, na.rm =TRUE),
-      sd = sd(x, na.rm =TRUE),
-      median = median(x, na.rm = TRUE),
-      min = min(x, na.rm = TRUE),
-      max = max(x, na.rm = TRUE)
+      mean = format(mean(x, na.rm =TRUE)),
+      median = format(median(x, na.rm = TRUE)),
+      min = format(min(x, na.rm = TRUE)),
+      max = format(max(x, na.rm = TRUE))
     )
+    
     o$vect <- vect_l
     
     plot_l <-structure(list(), class=c("plot_list", "list"))
@@ -184,7 +184,7 @@ singleVarStats.Date <-
     
     plot_l$point <- ggplot(data = data.frame(x_d = seq_along(x), 
                                              y_d = x), aes(x = x_d, y = y_d )) + 
-      geom_point()+
+      geom_point() +
       labs(x = "index",
            y = var_name,
            title = "Values over Index")

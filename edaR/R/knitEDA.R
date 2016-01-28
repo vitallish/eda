@@ -14,11 +14,10 @@ knitEDA <- function(x, ...){
 #' @describeIn knitEDA common_list method
 
 knitEDA.common_list <-function(x,...){
-  paste(
-    pander(x[1:5], style = "rmarkdown"),
-    '\n',
-    pander(x$full_table)
-  )
+
+  pander(x[1:5], style = "rmarkdown")
+    
+  pander(x$full_table)
   
   #o
 }
