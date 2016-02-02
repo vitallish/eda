@@ -1,6 +1,6 @@
 #' Add a skip class to an object
 #'
-#' @param x 
+#' @param x any R object
 #'
 #' @return original item with skip_eda class attached.
 #' @keywords internal

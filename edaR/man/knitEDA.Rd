@@ -5,8 +5,9 @@
 \alias{knitEDA.common_list}
 \alias{knitEDA.default}
 \alias{knitEDA.plot_list}
+\alias{knitEDA.skip_eda}
 \alias{knitEDA.vect_list}
-\title{knitEDA}
+\title{Custom Pander Outputs for Different Classes.}
 \usage{
 knitEDA(x, ...)
 
@@ -16,30 +17,36 @@ knitEDA(x, ...)
 
 \method{knitEDA}{vect_list}(x, ...)
 
+\method{knitEDA}{skip_eda}(x, ...)
+
 \method{knitEDA}{default}(x, ...)
 }
 \arguments{
-\item{x}{}
+\item{x}{a specific item that is a part of the list that is returned from
+singleVarStats}
 
-\item{...}{}
-}
-\value{
-prints stuff out
+\item{...}{currently not used}
 }
 \description{
-knitEDA
+\code{knitEDA} allows the edaR package a concise way of printing many
+different types of objects. See details below for each method.
+}
+\details{
+See source for \code{\link{printSingleVarStats}} for example of use. Outputs
+from singleVarStats can be single numbers, vectors or plots. \code{knitEDA()}
+helps visualize all of those different with a simple function call in a
+`knitr` document
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{common_list}: common_list method
+\item \code{common_list}: used for objects returned by \code{\link{commonSingVar}}
 
-\item \code{plot_list}: plot_list method
+\item \code{plot_list}: used on a list of plots
 
-\item \code{vect_list}: vect_list method
+\item \code{vect_list}: used on a list of named vectors
+
+\item \code{skip_eda}: used on objects outputted by \code{\link{skipPrintEDA}}
 
 \item \code{default}: default method (does not print and warns)
 }}
-\examples{
-uhg an example
-}
 

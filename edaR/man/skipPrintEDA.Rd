@@ -7,7 +7,7 @@
 skipPrintEDA(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{any R object}
 }
 \value{
 original item with skip_eda class attached.

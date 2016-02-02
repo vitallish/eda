@@ -12,34 +12,54 @@ filterOutlier(x, ...)
 
 \method{filterOutlier}{numeric}(x, replace_value = NA, ...)
 
-\method{filterOutlier}{factor}(x, perc = 1, mx = 5, o_lab = "_Other", ...)
+\method{filterOutlier}{factor}(x, perc = 1, mx = 5,
+  replace_value = "_Other", ...)
 
 \method{filterOutlier}{Date}(x, replace_value = NA, ...)
 
 \method{filterOutlier}{default}(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{a vector to filter}
 
 \item{...}{}
+
+\item{replace_value}{the replacement value for outliers for certain methods}
+
+\item{perc}{the maximum cumulative percentage of outputted values}
+
+\item{mx}{the maximum amount of levels}
 }
 \value{
-o
+same object as x, but with outliers minimized
 }
 \description{
-Minimize the spread/variablity in a column.
+\code{filterOutlier} helps remove possible invalid values from a vector by
+setting them to a value of your choosing. It currently works with the object
+types listed below in Usage.
+}
+\details{
+When performing exploratory analysis, it's often desirable to visualize values
+using either tables or plots. However, stray outliers that are often invalid
+numbers (such as '9999' denoting a missing value in some datasets) can make
+these visualizes hard to interpert because of the varying scale.
+\code{filterOutlier} helps minimize this by trimming percieved unnecessary
+values from a vector and replacing them with a value of your choosing. For
+numeric vectors, I find it best to use \code{NA} because it does not often get
+plotted.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{numeric}: 
+\item \code{numeric}: replaces values defined as 1.5*IQR from the mean
 
-\item \code{factor}: 
+\item \code{factor}: replaces and groups levels according to perc and mx
 
-\item \code{Date}: 
+\item \code{Date}: replaces values defined as 1.5*IQR from the mean
 
-\item \code{default}: 
+\item \code{default}: if there is no method defined, just return the
+original vect
 }}
 \examples{
-stuff
+temp
 }
 
