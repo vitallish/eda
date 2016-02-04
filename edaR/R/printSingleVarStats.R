@@ -1,6 +1,6 @@
-#' Create a full knit of a dataframe
+#' Create knit a singleVarStats object
 #'
-#' @param x a dataframe
+#' @param x an object to be printed, returned by \link{singleVarStats}
 #'
 #' @return NULL
 #' @export
@@ -10,14 +10,14 @@ printSingleVarStats <- function(single_var_stat_object){
   old_panderOption <- pander::panderOptions('knitr.auto.asis')
   pander::panderOptions('knitr.auto.asis', FALSE)
   
-  cat('## Single Var Interactions \n')
+  pandoc.header('Single Var Interactions', level = 2)
+  
   #out <- lapply(x,singleVarStats, trim = TRUE, max_list = 10)
   
   
   for (v in names(single_var_stat_object)){
     cat('\n')
-    cat('### ')
-    cat(v)
+    pandoc.header(v, level= 3)
     cat('\n')
     
     for (l in single_var_stat_object[[v]]){
