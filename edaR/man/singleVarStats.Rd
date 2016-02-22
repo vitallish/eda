@@ -3,6 +3,7 @@
 \name{singleVarStats}
 \alias{singleVarStats}
 \alias{singleVarStats.Date}
+\alias{singleVarStats.POSIXct}
 \alias{singleVarStats.character}
 \alias{singleVarStats.data.frame}
 \alias{singleVarStats.factor}
@@ -25,6 +26,9 @@ singleVarStats(x, ...)
   max_list = getOption("max.print"), var_name = "x_def")
 
 \method{singleVarStats}{logical}(x, trim = FALSE,
+  max_list = getOption("max.print"), var_name = "x_def")
+
+\method{singleVarStats}{POSIXct}(x, trim = FALSE,
   max_list = getOption("max.print"), var_name = "x_def")
 
 \method{singleVarStats}{data.frame}(data_frame)
@@ -65,6 +69,8 @@ factor version
 \item \code{Date}: 
 
 \item \code{logical}: : converts boolean to factor and singleVarStats treats as such.
+
+\item \code{POSIXct}: 
 
 \item \code{data.frame}: 
 }}

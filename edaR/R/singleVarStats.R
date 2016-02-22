@@ -206,6 +206,18 @@ singleVarStats.logical <-
 
 }
 
+#' @describeIn singleVarStats
+#' @export
+singleVarStats.POSIXct <-
+  function(x, 
+           trim = FALSE, 
+           max_list = getOption("max.print"),
+           var_name = "x_def"){
+    
+    singleVarStats.Date(x, trim, max_list, var_name)
+    
+}
+
 
 #' @describeIn singleVarStats
 #' @export

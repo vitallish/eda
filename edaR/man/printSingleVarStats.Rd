@@ -2,14 +2,14 @@
 % Please edit documentation in R/printSingleVarStats.R
 \name{printSingleVarStats}
 \alias{printSingleVarStats}
-\title{Create a full knit of a dataframe}
+\title{Create knit a singleVarStats object}
 \usage{
 printSingleVarStats(single_var_stat_object)
 }
 \arguments{
-\item{x}{a dataframe}
+\item{x}{an object to be printed, returned by \link{singleVarStats}}
 }
 \description{
-Create a full knit of a dataframe
+Create knit a singleVarStats object
 }
 
